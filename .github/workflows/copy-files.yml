@@ -1,0 +1,27 @@
+name: Copy files to bucket
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  copy-file:
+    name: Copy file to bucket
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Copy with rsync
+        run: time gsutil rsync -r ./build gs://${{ secrets.STORAGE_BUCKET_NAME }}
+
+      - name: Setmeta to skip cache
+        run: time gsutil setmeta -h "Cache-Control:no-store" gs://${{ secrets.STORAGE_BUCKET_NAME }}/**/*.txt
