@@ -1,6 +1,6 @@
 import { $ } from "bun";
 
 for (let i = 0; i < 1500; i++) {
-  await $`echo test-${i} > file-${i}.txt`
+  await $`echo test-${i} > ./files/file-${i}.txt`
 }
 
