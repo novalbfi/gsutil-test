@@ -21,7 +21,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Copy with rsync
-        run: time gsutil rsync -r ./files gs://${{ secrets.STORAGE_BUCKET_NAME }}
+        run: time gsutil -m rsync -r ./files gs://${{ secrets.STORAGE_BUCKET_NAME }}
 
       - name: Setmeta to skip cache
         run: time gsutil setmeta -h "Cache-Control:no-store" gs://${{ secrets.STORAGE_BUCKET_NAME }}/**/*.txt
